@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+
+import urllib.request, json, sys
+
+pages = [
+	["Harry Truman", "Harry_S._Truman"],
+	["Doris Day", "Doris_Day"],
+	["Red China", "Communist_Party_of_China"],
+	["Johnnie Ray", "Johnnie_Ray"],
+	["South Pacific", "South_Pacific_(musical)"],
+	["Walter Winchell", "Walter_Winchell"],
+	["Joe DiMaggio", "Joe_DiMaggio"],
+	["Joe McCarthy", "Joseph_McCarthy"],
+	["Richard Nixon", "Richard_Nixon"],
+	["Studebaker", "Studebaker"],
+	["Television", "Television"],
+	["North Korea", "North_Korea"],
+	["South Korea", "South_Korea"],
+	["Marilyn Monroe", "Marilyn_Monroe"],
+
+	["Rosenbergs", "Julius_and_Ethel_Rosenberg"],
+	["H-Bomb", "Thermonuclear_weapon"],
+	["Sugar Ray", "Sugar_Ray_Leonard"],
+	["Panmunjom", "Panmunjom"],
+	["Brando", "Marlon_Brando"],
+	["The King And I", "The_King_and_I"],
+	["The Catcher In The Rye", "The_Catcher_in_the_Rye"],
+	["Eisenhower", "Dwight_D._Eisenhower"],
+	["Vaccine", "Polio_vaccine"],
+	["England's got a new queen", "Coronation_of_Queen_Elizabeth_II"],
+	["Marciano", "Rocky_Marciano"],
+	["Liberace", "Liberace"],
+	["Santayana", "George_Santayana"],
+
+	["Joseph Stalin", "Joseph_Stalin"],
+	["Malenkov", "Georgy_Malenkov"],
+	["Nasser", "Gamal_Abdel_Nasser"],
+	["Prokofiev", "Sergei_Prokofiev"],
+	["Rockefeller", "Winthrop_Rockefeller"],
+	["Campanella", "Roy_Campanella"],
+	["Communist Bloc", "Eastern_Bloc"],
+	["Roy Cohn", "Roy_Cohn"],
+	["Juan Peron", "Juan_Per%C3%B3n"],
+	["Toscanini", "Arturo_Toscanini"],
+	["Dacron", "Polyethylene_terephthalate"],
+	["Dien Bien Phu Falls", "Battle_of_Dien_Bien_Phu"],
+	["Rock Around the Clock", "Rock_Around_the_Clock"],
+	["Einstein", "Albert_Einstein"],
+	["James Dean", "James_Dean"],
+	["Brooklyn's got a winning team", "History_of_the_Brooklyn_Dodgers"],
+	["Davy Crockett", "Davy_Crockett_(TV_miniseries)"],
+	["Peter Pan", "Peter_Pan_(1954_musical)"],
+	["Elvis Presley", "Elvis_Presley"],
+	["Disneyland", "Disneyland"],
+	["Bardot", "Brigitte_Bardot"],
+	["Budapest", "Hungarian_Revolution_of_1956"],
+	["Alabama", "Montgomery_Bus_Boycott"],
+	["Khrushchev", "Nikita_Khrushchev"],
+	["Princess Grace", "Grace_Kelly"],
+	["Peyton Place", "Peyton_Place_(novel)"],
+	["Trouble in the Suez", "Suez_Crisis"],
+
+	["Little Rock", "Little_Rock_Nine"],
+	["Pasternak", "Boris_Pasternak"],
+	["Mickey Mantle", "Mickey_Mantle"],
+	["Kerouac", "Jack_Kerouac"],
+	["Sputnik", "Sputnik_1"],
+	["Chou En-Lai", "Zhou_Enlai"],
+	["Bridge On The River Kwai", "The_Bridge_on_the_River_Kwai"],
+	["Lebanon", "Lebanon"],
+	["Charles de Gaulle", "Charles_de_Gaulle"],
+	["California baseball", "Los_Angeles_Dodgers"],
+	["Starkweather Homicide", "Charles_Starkweather"],
+	["Children of Thalidomide", "Thalidomide"],
+
+	["Buddy Holly", "Buddy_Holly"],
+	["Ben-Hur", "Ben-Hur_(1959_film)"],
+	["Space monkey", "Monkeys_and_apes_in_space"],
+	["Mafia", "American_Mafia"],
+	["Hula hoops", "Hula_hoop"],
+	["Castro", "Fidel_Castro"],
+	["Edsel is a no-go", "Edsel"],
+	["U-2", "Lockheed_U-2"],
+	["Syngman Rhee", "Syngman_Rhee"],
+	["payola", "Payola"],
+	["Kennedy", "John_F._Kennedy"],
+	["Chubby Checker", "Chubby_Checker"],
+	["Psycho", "Psycho_(1960_film)"],
+	["Belgians in the Congo", "Congo_Crisis"],
+
+	["Hemingway", "Ernest_Hemingway"],
+	["Eichmann", "Adolf_Eichmann"],
+	["Stranger in a Strange Land", "Stranger_in_a_Strange_Land"],
+	["Dylan", "Bob_Dylan"],
+	["Berlin", "Berlin_Wall"],
+	["Bay of Pigs invasion", "Bay_of_Pigs_Invasion"],
+	["Lawrence of Arabia", "Lawrence_of_Arabia_(film)"],
+	["British Beatlemania", "Beatlemania"],
+	["Ole Miss", "Ole_Miss_riot_of_1962"],
+	["John Glenn", "John_Glenn"],
+	["Liston beats Patterson", "Sonny_Liston"],
+
+	["Pope Paul", "Pope_Paul_VI"],
+	["Malcolm X", "Malcolm_X"],
+	["British politician sex", "Profumo_affair"],
+	["J.F.K. blown away", "Assassination_of_John_F._Kennedy"],
+
+	["Birth control", "Griswold_v._Connecticut"],
+	["Ho Chi Minh", "Ho_Chi_Minh"],
+	["Richard Nixon back again", "Richard_Nixon"],
+	["Moonshot", "Apollo_11"],
+	["Woodstock", "Woodstock"],
+	["Watergate", "Watergate_scandal"],
+	["Punk rock", "Punk_rock"],
+	["Begin", "Menachem_Begin"],
+	["Reagan", "Ronald_Reagan"],
+	["Palestine", "Palestine"],
+	["Terror on the airline", "Operation_Entebbe"],
+	["Ayatollah's in Iran", "Ruhollah_Khomeini"],
+	["Russians in Afghanistan", "Soviet_war_in_Afghanistan"],
+	["Wheel of Fortune", "Wheel_of_Fortune_(U.S._game_show)"],
+	["Sally Ride", "Sally_Ride"],
+	["Heavy metal suicide", "Backmasking"],
+	["Foreign debts", "Balance_of_trade"],
+	["Homeless vets", "Vietnam_veteran"],
+	["AIDS", "HIV/AIDS"],
+	["Crack", "Crack_cocaine"],
+	["Bernie Goetz", "Bernhard_Goetz"],
+	["Hypodermics on the shores", "Syringe_Tide"],
+	["China's under martial law", "People%27s_Liberation_Army_at_Tiananmen_Square_protests_of_1989"],
+	["Rock and roller cola wars", "Cola_Wars"]
+]
+
+for p in pages:
+	req = urllib.request.urlopen("http://stats.grok.se/json/en/201411/%s" % p[1])
+	json_str = req.read().decode('utf-8') # probably not this charset...
+	data = json.loads(json_str)
+	views = sum(data['daily_views'].values())
+	p.append(views)
+	sys.stderr.write("%s: %d\n" % (p[0], p[2]) )
+
+pages.sort(key=lambda p: p[2], reverse=True)
+
+for p in pages:
+	print(""" * <a href="http://en.wikipedia.org/wiki/%s">%s</a> (%s)""" % (p[1], p[0], p[2]))
+
